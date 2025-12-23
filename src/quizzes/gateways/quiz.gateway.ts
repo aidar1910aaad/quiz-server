@@ -22,6 +22,7 @@ import { Participant } from '../../participants/entities/participant.entity';
     credentials: false, // Должно быть false при origin: '*'
   },
   namespace: '/quiz',
+  transports: ['websocket', 'polling'], // Поддержка и websocket, и polling для совместимости
 })
 export class QuizGateway implements OnGatewayConnection, OnGatewayDisconnect, OnModuleDestroy {
   @WebSocketServer()

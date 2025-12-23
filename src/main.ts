@@ -9,9 +9,9 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   const logger = new Logger('Bootstrap');
   
-  // Настройка CORS для всех источников (для деплоя без ошибок)
+  // Настройка CORS для всех источников (для деплоя на Railway и других платформах)
   app.enableCors({
-    origin: '*', // Разрешить все источники (для продакшена)
+    origin: '*', // Разрешить все источники (самый простой способ для деплоя)
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS', 'HEAD'],
     allowedHeaders: ['Content-Type', 'Authorization', 'Accept', 'X-User-Id', 'Origin', 'X-Requested-With'],
     exposedHeaders: ['Content-Length', 'Content-Type'],
@@ -117,8 +117,9 @@ API для создания и проведения интерактивных �
     logger.error(`❌ Ошибка подключения к БД: ${dbStatus.message}`);
   }
   
-  const port = process.env.PORT ? parseInt(process.env.PORT, 10) : 3000;
-  await app.listen(port);
+  // Railway и другие платформы предоставляют PORT через переменную окружения
+  const port = process.env.PORT ? parseInt(process.env.PORT, 10) : 3001;
+  await app.listen(port, '0.0.0.0'); // Слушаем на всех интерфейсах для деплоя
   logger.log(`🚀 Приложение запущено на порту ${port}`);
   logger.log(`📊 Доступные эндпоинты:`);
   logger.log(`   - GET http://localhost:${port}/`);
